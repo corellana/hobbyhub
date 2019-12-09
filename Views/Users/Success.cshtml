@@ -1,0 +1,13 @@
+@model User
+@using Project.Models
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Success!</h1>
+    <p>Hello @ViewBag.CurrentUser.FirstName</p>
+
+    <a href="register" class="btn btn-link">Back Home</a> 
+</div>

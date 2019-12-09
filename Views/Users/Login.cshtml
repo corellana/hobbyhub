@@ -1,0 +1,35 @@
+@model User
+@using Project.Models
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Login</h1>
+
+    <a href="" class="btn btn-link">Back Home</a> 
+</div>
+
+<div class="container user">
+    <div class="row">
+        <div class="col-lg">
+            <form asp-action="Login" asp-controller="Users" method="post">
+                <!-- Email -->
+                <div class="form-group">
+                    <span asp-validation-for="Email"></span>
+                    <label asp-for="Email">Email:</label>
+                    <input type="text" class="form-control" asp-for="Email" placeholder="Your Email">
+                </div>
+                <!-- Password -->
+                <div class="form-group">
+                    <span asp-validation-for="Password"></span>
+                    <label asp-for="Password">Password:</label>
+                    <input type="password" class="form-control" asp-for="Password">
+                </div>
+                <!-- Submit -->
+                <button type="submit" class="btn btn-success">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -8,7 +8,7 @@ namespace Project.Models
         // auto-implemented properties need to match the columns in your table
         // the [Key] attribute is used to mark the Model property being used for your table's Primary Key
         [Key]
-        public int Id { get; set; }
+        public int id { get; set; }
         // MySQL VARCHAR and TEXT types can be represeted by a string
 
         // First Name ------------------------------------------------------------
@@ -41,6 +41,6 @@ namespace Project.Models
         [NotMapped]
         [Compare("Password")]
         [DataType(DataType.Password)]
-        public string PasswordConfirmation { get; set; }
+        public string Confirm { get; set; }
     }
 }
