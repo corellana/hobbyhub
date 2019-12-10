@@ -1,6 +1,8 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System;
+using System.Collections.Generic;
+
 namespace Project.Models
 {
     public class User
@@ -42,5 +44,8 @@ namespace Project.Models
         [Compare("Password")]
         [DataType(DataType.Password)]
         public string Confirm { get; set; }
+
+        // Relationship ------------------------------------------------------------------------------------
+        public List<Association> Weddings { get; set; }
     }
 }

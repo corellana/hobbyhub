@@ -20,7 +20,7 @@ namespace Project.Controllers
         
         public IActionResult Index()
         {
-            return View();
+            return Redirect("/register");
         }
 
         public IActionResult Privacy()
