@@ -2,13 +2,11 @@
 @model List<Wedding>
 
     @{
-    ViewData["Title"] = "Weddings Dashboard";
+    ViewData["Title"] = "Weddings";
     }
 
     <div class="text-center">
-        <h1 class="display-4">Welcome to the Wedding Planner</h1>
-
-        
+        <h1 class="display-4">Welcome to the Wedding Planner</h1> 
     </div>
 
     <table class="table">
@@ -21,10 +19,19 @@
             </tr>
         </thead>
         <tbody>
-            
+            @{foreach (Wedding wedding in Model){
+            <tr>
+                <td>NameWedderOne</td>
+                <td></td>
+                <td></td>
+                <td></td> 
+            </tr>
+            }}
         </tbody>
-    </table>
+    </table>   
+}
 
+    <!-- Basic Links -->
     <a href="/weddings/new" class="btn btn-link">New Wedding</a>
     <a href="/">Log out</a>
     

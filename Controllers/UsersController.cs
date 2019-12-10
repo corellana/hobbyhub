@@ -37,7 +37,7 @@ namespace Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (dbContext.Users.Any(user => user.Email == user.Email))
+                if (dbContext.Users.Any(user => user.Email == theUser.Email))
                 {
                     // Manually add a ModelState error to the Email field, with provided
                     // error message
@@ -50,7 +50,7 @@ namespace Project.Controllers
                     theUser.Password = Hasher.HashPassword(theUser, theUser.Password);
                     dbContext.Users.Add(theUser);
                     dbContext.SaveChanges();
-                    return Redirect("/success");
+                    return Redirect("/weddings");
                 }
             }
             else 
@@ -114,7 +114,7 @@ namespace Project.Controllers
 
                 HttpContext.Session.SetInt32("UserId", userInDb.id);
 
-                return Redirect("Success");
+                return Redirect("/weddings");
             }
             ModelState.AddModelError("Email", "Invalid Email/Password");
                     return View("Login");

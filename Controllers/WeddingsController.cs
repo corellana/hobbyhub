@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Project.Models;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Project.Controllers
 {
     public class WeddingsController : Controller
@@ -23,27 +24,33 @@ namespace Project.Controllers
         [Route("weddings")]
         public IActionResult Index()
         {
-            List<Wedding> AllWeddings = dbContext.Weddings
-                .ToList();
+            List<Wedding> AllWeddings = dbContext.Weddings.ToList();
             ViewBag.AllWeddings = AllWeddings;
             return View();
         }
 
-    //     [HttpPost]
-    //     [Route("products")]
-    //     public IActionResult Create(Product product)
-    //     {
-    //         if (ModelState.IsValid)
-    //         {
-    //             dbContext.Products.Add(product);
-    //             dbContext.SaveChanges();
-    //             return Redirect("products");
-    //         }
-    //         else
-    //         {
-    //             return View("Index", product);
-    //         }
-    //     }
+        [HttpGet]
+        [Route("weddings/new")]
+        public IActionResult New()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [Route("weddings")]
+        public IActionResult Create(Wedding wedding)
+        {
+            if (ModelState.IsValid)
+            {
+                dbContext.Weddings.Add(wedding);
+                dbContext.SaveChanges();
+                return Redirect("weddings");
+            }
+            else
+            {
+                return View("New", wedding);
+            }
+        }
 
     //     [HttpGet("products/{ProductId}")]
     //     public IActionResult Show(int ProductId)
