@@ -6,9 +6,17 @@
     }
 
     <div class="text-center">
-        <h1 class="display-4">Welcome to the Wedding Planner</h1>
+        <h1 class="display-4">@Model.NameWedderOne and @Model.NameWedderTwo's Wedding</h1>
     </div>
-        <h3 class="display-4">@Model.NameWedderOne</h3>
+    <div class="container">
+        <div class="row">
+            <div class="font-weight-bold">Date: @Model.Day</div>
+            <p>@Model.Address</p>
+            <p>Guests:</p>
+
+
+        </div>
+    </div>
 
 <!-- Basic Links -->
 <a href="/products">Home</a>

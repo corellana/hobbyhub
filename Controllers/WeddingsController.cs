@@ -26,7 +26,7 @@ namespace Project.Controllers
         {
             List<Wedding> AllWeddings = dbContext.Weddings.ToList();
             ViewBag.AllWeddings = AllWeddings;
-            return View();
+            return View(AllWeddings);
         }
 
         [HttpGet]
@@ -52,40 +52,92 @@ namespace Project.Controllers
             }
         }
 
-    //     [HttpGet("products/{ProductId}")]
-    //     public IActionResult Show(int ProductId)
-    //     {
-    //         Product product = dbContext.Products
-    //             .Include(p => p.Categories)
-    //             .ThenInclude(association => association.Category)
-    //             .FirstOrDefault(p => p.ProductId == ProductId);
+        [HttpGet("weddings/{weddingId}")]
+        public IActionResult Show(int WeddingId)
+        {
+            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.weddingId == WeddingId);
+            if (theWedding == null)
+            {
+                return NotFound();
+            }
+            return View(theWedding);
+        }
 
-    //         List<Category> AllCategories = dbContext.Categories
-    //             .ToList();
-    //         ViewBag.AllCategories = AllCategories;
+        //     [HttpPost("products/{ProductId}/categories")]
+        //     public IActionResult AddCategory(int ProductId, int CategoryId)
+        //     {
+        //         Product product = dbContext.Products
+        //             .FirstOrDefault(p => p.ProductId == ProductId);
 
-    //         return View(product);
-    //     }
+        //         Category category = dbContext.Categories
+        //             .FirstOrDefault(c => c.CategoryId == CategoryId);
 
-        
-    //     [HttpPost("products/{ProductId}/categories")]
-    //     public IActionResult AddCategory(int ProductId, int CategoryId)
-    //     {
-    //         Product product = dbContext.Products
-    //             .FirstOrDefault(p => p.ProductId == ProductId);
-            
-    //         Category category = dbContext.Categories
-    //             .FirstOrDefault(c => c.CategoryId == CategoryId);
-
-    //         Association association = new Association();
-    //         association.Product = product;
-    //         association.Category = category;
-    //         dbContext.Association.Add(association);
-    //         dbContext.SaveChanges();
+        //         Association association = new Association();
+        //         association.Product = product;
+        //         association.Category = category;
+        //         dbContext.Association.Add(association);
+        //         dbContext.SaveChanges();
 
 
-    //         return Redirect($"/products/{product.ProductId}");
-    //     }
+        //         return Redirect($"/products/{product.ProductId}");
+        //     }
+
+        // [HttpGet]
+        // [Route("dishes/{id}/edit")]
+        // public IActionResult Edit(int id)
+        // {
+        //     Dish theDish = dbContext.Dishes.FirstOrDefault(dish => dish.id == id);
+
+        //     if (theDish == null)
+        //     {
+        //         return NotFound();
+        //     }
+
+        //     return View(theDish);
+        // }
+
+        // [HttpPost]
+        // [Route("dishes/{id}")]
+        // public IActionResult Update(int id, Dish formDish)
+        // {
+        //     Dish theDish = dbContext.Dishes.FirstOrDefault(dish => dish.id == id);
+        //     if (ModelState.IsValid)
+        //     {
+        //         theDish.Name = formDish.Name;
+        //         theDish.Chef = formDish.Chef;
+        //         theDish.Calories = formDish.Calories;
+        //         theDish.Tastiness = formDish.Tastiness;
+        //         theDish.Description = formDish.Description;
+        //         theDish.UpdatedAt = DateTime.Now;
+        //         dbContext.SaveChanges();
+        //         return Redirect($"/dishes/{formDish.id}");
+        //     }
+        //     else
+        //     {
+        //         return View("Edit");
+        //     }
+
+
+        [HttpDelete]
+        [Route("weddings/{weddingId}")]
+        public IActionResult Destroy(int id)
+        {
+            if (ModelState.IsValid)
+            {
+                return View("");
+            }
+            else
+            {
+                return View("Index");
+            }
+        }
+
+
+
+
+
+
+
 
     }
 

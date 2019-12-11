@@ -120,8 +120,6 @@ namespace Project.Controllers
                     return View("Login");
         }
 
-
-
         // [HttpGet]
         // [Route("dishes/{id}")]
         // public IActionResult Show(int id)

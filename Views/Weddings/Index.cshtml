@@ -21,15 +21,15 @@
         <tbody>
             @{foreach (Wedding wedding in Model){
             <tr>
-                <td>NameWedderOne</td>
-                <td></td>
-                <td></td>
-                <td></td> 
+                <td>@wedding.NameWedderOne & @wedding.NameWedderTwo</td>
+                <td>@wedding.Day</td>
+                <td>#count</td>
+                <td>#Action</td> 
             </tr>
             }}
         </tbody>
     </table>   
-}
+
 
     <!-- Basic Links -->
     <a href="/weddings/new" class="btn btn-link">New Wedding</a>
