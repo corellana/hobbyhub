@@ -6,7 +6,7 @@
     }
 
     <div class="text-center">
-        <h1 class="display-4">Welcome to the Wedding Planner</h1> 
+        <h1 class="display-4">Welcome to the Wedding Planner</h1>
     </div>
 
     <table class="table">
@@ -21,17 +21,36 @@
         <tbody>
             @{foreach (Wedding wedding in Model){
             <tr>
-                <td>@wedding.NameWedderOne & @wedding.NameWedderTwo</td>
+                <td><a href="/weddings/@wedding.WeddingId">@wedding.NameWedderOne & @wedding.NameWedderTwo</a></td>
                 <td>@wedding.Day</td>
                 <td>#count</td>
-                <td>#Action</td> 
+                <td>
+                    @if(@wedding.Creator.UserId == ViewBag.CurrentUser.UserId)
+                    {
+
+                    <form action="/weddings/@wedding.WeddingId/destroy" method="post">
+                        <button class="btn btn-secondary btn-sm">Delete</button>
+                    </form>
+                    }
+                    else if(wedding.HasGuest(ViewBag.CurrentUser))
+                    {
+                    <form action="/weddings/@wedding.WeddingId/unrsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">Un RSVP</button>
+                    </form>
+                    }
+                    else
+                    {
+                    <form action="/weddings/@wedding.WeddingId/rsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">RSVP</button>
+                    </form>
+                    }
+                </td>
             </tr>
             }}
         </tbody>
-    </table>   
+    </table>
 
 
     <!-- Basic Links -->
     <a href="/weddings/new" class="btn btn-link">New Wedding</a>
-    <a href="/">Log out</a>
-    
+    <a href="/logout">Log out</a>

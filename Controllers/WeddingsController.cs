@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Project.Models;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Http;
 
 namespace Project.Controllers
 {
@@ -24,7 +24,19 @@ namespace Project.Controllers
         [Route("weddings")]
         public IActionResult Index()
         {
-            List<Wedding> AllWeddings = dbContext.Weddings.ToList();
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
+            ViewBag.CurrentUser = currentUser;
+
+            List<Wedding> AllWeddings = dbContext.Weddings
+                .Include(w => w.Creator)
+                .Include(w => w.Guests)
+                .ThenInclude(a => a.User)
+                .ToList();
             ViewBag.AllWeddings = AllWeddings;
             return View(AllWeddings);
         }
@@ -33,6 +45,12 @@ namespace Project.Controllers
         [Route("weddings/new")]
         public IActionResult New()
         {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
             return View();
         }
 
@@ -40,8 +58,15 @@ namespace Project.Controllers
         [Route("weddings")]
         public IActionResult Create(Wedding wedding)
         {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
             if (ModelState.IsValid)
             {
+                wedding.Creator = currentUser;
                 dbContext.Weddings.Add(wedding);
                 dbContext.SaveChanges();
                 return Redirect("weddings");
@@ -55,7 +80,13 @@ namespace Project.Controllers
         [HttpGet("weddings/{weddingId}")]
         public IActionResult Show(int WeddingId)
         {
-            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.weddingId == WeddingId);
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
+            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == WeddingId);
             if (theWedding == null)
             {
                 return NotFound();
@@ -63,75 +94,109 @@ namespace Project.Controllers
             return View(theWedding);
         }
 
-        //     [HttpPost("products/{ProductId}/categories")]
-        //     public IActionResult AddCategory(int ProductId, int CategoryId)
-        //     {
-        //         Product product = dbContext.Products
-        //             .FirstOrDefault(p => p.ProductId == ProductId);
-
-        //         Category category = dbContext.Categories
-        //             .FirstOrDefault(c => c.CategoryId == CategoryId);
-
-        //         Association association = new Association();
-        //         association.Product = product;
-        //         association.Category = category;
-        //         dbContext.Association.Add(association);
-        //         dbContext.SaveChanges();
-
-
-        //         return Redirect($"/products/{product.ProductId}");
-        //     }
-
-        // [HttpGet]
-        // [Route("dishes/{id}/edit")]
-        // public IActionResult Edit(int id)
-        // {
-        //     Dish theDish = dbContext.Dishes.FirstOrDefault(dish => dish.id == id);
-
-        //     if (theDish == null)
-        //     {
-        //         return NotFound();
-        //     }
-
-        //     return View(theDish);
-        // }
-
-        // [HttpPost]
-        // [Route("dishes/{id}")]
-        // public IActionResult Update(int id, Dish formDish)
-        // {
-        //     Dish theDish = dbContext.Dishes.FirstOrDefault(dish => dish.id == id);
-        //     if (ModelState.IsValid)
-        //     {
-        //         theDish.Name = formDish.Name;
-        //         theDish.Chef = formDish.Chef;
-        //         theDish.Calories = formDish.Calories;
-        //         theDish.Tastiness = formDish.Tastiness;
-        //         theDish.Description = formDish.Description;
-        //         theDish.UpdatedAt = DateTime.Now;
-        //         dbContext.SaveChanges();
-        //         return Redirect($"/dishes/{formDish.id}");
-        //     }
-        //     else
-        //     {
-        //         return View("Edit");
-        //     }
-
-
-        [HttpDelete]
-        [Route("weddings/{weddingId}")]
-        public IActionResult Destroy(int id)
+        [HttpPost]
+        [Route("weddings/{weddingId}/destroy")]
+        public IActionResult Destroy(int weddingId)
         {
-            if (ModelState.IsValid)
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
             {
-                return View("");
+                return Redirect("/register");
             }
-            else
+            //Obtengo el wedding
+            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
+            if (theWedding == null)
             {
-                return View("Index");
+                return NotFound();
             }
+            if (theWedding.Creator.UserId == currentUser.UserId)
+            {
+                dbContext.Weddings.Remove(theWedding);
+                dbContext.SaveChanges();
+            }
+            return Redirect("/weddings");
         }
 
+        [HttpPost]
+        [Route("weddings/{weddingId}/rsvp")]
+        public IActionResult RSVP(int weddingId)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
+            //Obtengo el wedding
+            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
+            if (theWedding == null)
+            {
+                return NotFound();
+            }
+            // Found if the user already confirm asistance
+            Association existingRSVP = dbContext.Association
+                .Where(a => a.User == currentUser && a.Wedding == theWedding)
+                .FirstOrDefault();
+            if (existingRSVP != null)
+            {
+                return BadRequest(); //TODO Notices.
+            }
+
+            // Crear la asociacion y guardar ese RSVP como una nueva linea en la tabla association
+            Association rsvp = new Association();
+            rsvp.Wedding = theWedding;
+            // rsvp.WeddingId = theWedding.WeddingId;
+            // rsvp.WeddingId = weddingId;
+
+            rsvp.User = currentUser;
+            dbContext.Association.Add(rsvp);
+            dbContext.SaveChanges();
+
+            return Redirect("/weddings");
+        }
+
+        [HttpPost]
+        [Route("weddings/{weddingId}/unrsvp")]
+        public IActionResult UnRSVP(int weddingId)
+        {
+            // estas en sesion?
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/register");
+            }
+            //Obtengo el wedding
+            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
+            if (theWedding == null)
+            {
+                return NotFound();
+            }
+            //Remover el rsvp
+            //Encontrar la asociacion RSVP
+            Association unrsvp = dbContext.Association
+                .Where(a => a.User == currentUser && a.Wedding == theWedding)
+                .FirstOrDefault();
+
+            if (unrsvp != null) {
+                dbContext.Association.Remove(unrsvp);
+                dbContext.SaveChanges();
+            }
+
+            return Redirect("/weddings");
+        }
+
+        // No poder confirmar dos veces
+        // trató de remover un rsvp desde la consola en en a href al link de rsvp
+        // no poder borrar la boda de otro creator.
+        // revisar si algo existe con ese especifico Id
+        // validar que no pueda ingresar un valor diferente a una fecha en date
+        // cuando trate de ir a rutas a la mala, tirarlo a una pagina de error y enlace a volver al home.
+        // hash the email
+        // aplication//// storage... cookies
+        // No mostrar "Logout" si ya estoy deslogeado
+        //Weddings expire when the scheduled date passes, and are removed from the database.
 
 
 

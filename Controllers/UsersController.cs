@@ -27,7 +27,13 @@ namespace Project.Controllers
         public IActionResult Register()
         {
             // List<User> AllUsers = dbContext.Users.ToList();
-
+            // TODO revisar por qué no está funcionando.
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser != null)
+            {
+                return Redirect("/weddings");
+            }
             return View();
         }
 
@@ -35,6 +41,14 @@ namespace Project.Controllers
         [Route("register")]
         public IActionResult Register(User theUser)
         {
+            // TODO revisar por qué no está funcionando.
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/weddings");
+            }
+
             if (ModelState.IsValid)
             {
                 if (dbContext.Users.Any(user => user.Email == theUser.Email))
@@ -50,6 +64,7 @@ namespace Project.Controllers
                     theUser.Password = Hasher.HashPassword(theUser, theUser.Password);
                     dbContext.Users.Add(theUser);
                     dbContext.SaveChanges();
+                    HttpContext.Session.SetInt32("UserId", theUser.UserId);
                     return Redirect("/weddings");
                 }
             }
@@ -64,15 +79,14 @@ namespace Project.Controllers
         [Route("success")]
         public IActionResult Success()
         {
+            // TODO deslogeada me tira a un error.
             int? userId = HttpContext.Session.GetInt32("UserId");
-            var currentUser = dbContext.Users.FirstOrDefault(u => u.id == userId);
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             ViewBag.CurrentUser = currentUser;
 
             return View();
         }
 
-
-        
         [HttpGet]
         [Route("login")]
         public IActionResult Login()
@@ -112,12 +126,20 @@ namespace Project.Controllers
                     return View("Login");
                 }
 
-                HttpContext.Session.SetInt32("UserId", userInDb.id);
+                HttpContext.Session.SetInt32("UserId", userInDb.UserId);
 
                 return Redirect("/weddings");
             }
             ModelState.AddModelError("Email", "Invalid Email/Password");
                     return View("Login");
+        }
+
+        [HttpGet]
+        [Route("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return Redirect("/register");
         }
 
         // [HttpGet]

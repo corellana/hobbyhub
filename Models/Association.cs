@@ -6,8 +6,8 @@ namespace Project.Models
     {
         [Key]
         public int AssociationId { get; set; }
-        public int id { get; set; }
-        public int ProductId { get; set; }
+        public int UserId { get; set; }
+        public int WeddingId { get; set; }
         public User User { get; set; }
         public Wedding Wedding { get; set; }
     }

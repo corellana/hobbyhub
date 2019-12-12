@@ -22,24 +22,22 @@ namespace Project.Migrations
                     b.Property<int>("AssociationId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("ProductId");
+                    b.Property<int>("UserId");
 
-                    b.Property<int>("id");
-
-                    b.Property<int?>("weddingId");
+                    b.Property<int>("WeddingId");
 
                     b.HasKey("AssociationId");
 
-                    b.HasIndex("id");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("weddingId");
+                    b.HasIndex("WeddingId");
 
                     b.ToTable("Association");
                 });
 
             modelBuilder.Entity("Project.Models.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
@@ -58,14 +56,14 @@ namespace Project.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
-                    b.HasKey("id");
+                    b.HasKey("UserId");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Project.Models.Wedding", b =>
                 {
-                    b.Property<int>("weddingId")
+                    b.Property<int>("WeddingId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Address")
@@ -83,7 +81,11 @@ namespace Project.Migrations
 
                     b.Property<DateTime>("UpdatedAt");
 
-                    b.HasKey("weddingId");
+                    b.Property<int>("UserId");
+
+                    b.HasKey("WeddingId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Weddings");
                 });
@@ -92,12 +94,21 @@ namespace Project.Migrations
                 {
                     b.HasOne("Project.Models.User", "User")
                         .WithMany("Weddings")
-                        .HasForeignKey("id")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Project.Models.Wedding", "Wedding")
                         .WithMany("Users")
-                        .HasForeignKey("weddingId");
+                        .HasForeignKey("WeddingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Project.Models.Wedding", b =>
+                {
+                    b.HasOne("Project.Models.User", "Creator")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

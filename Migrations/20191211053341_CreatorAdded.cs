@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project.Migrations
 {
-    public partial class FirstMigration : Migration
+    public partial class CreatorAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace Project.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    id = table.Column<int>(nullable: false)
+                    UserId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
@@ -23,25 +23,32 @@ namespace Project.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Users", x => x.id);
+                    table.PrimaryKey("PK_Users", x => x.UserId);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Weddings",
                 columns: table => new
                 {
-                    weddingId = table.Column<int>(nullable: false)
+                    WeddingId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     NameWedderOne = table.Column<string>(nullable: false),
                     NameWedderTwo = table.Column<string>(nullable: false),
                     Day = table.Column<DateTime>(nullable: false),
                     Address = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
-                    UpdatedAt = table.Column<DateTime>(nullable: false)
+                    UpdatedAt = table.Column<DateTime>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Weddings", x => x.weddingId);
+                    table.PrimaryKey("PK_Weddings", x => x.WeddingId);
+                    table.ForeignKey(
+                        name: "FK_Weddings_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,36 +57,40 @@ namespace Project.Migrations
                 {
                     AssociationId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    id = table.Column<int>(nullable: false),
-                    ProductId = table.Column<int>(nullable: false),
-                    weddingId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false),
+                    WeddingId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Association", x => x.AssociationId);
                     table.ForeignKey(
-                        name: "FK_Association_Users_id",
-                        column: x => x.id,
+                        name: "FK_Association_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
-                        principalColumn: "id",
+                        principalColumn: "UserId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Association_Weddings_weddingId",
-                        column: x => x.weddingId,
+                        name: "FK_Association_Weddings_WeddingId",
+                        column: x => x.WeddingId,
                         principalTable: "Weddings",
-                        principalColumn: "weddingId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "WeddingId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Association_id",
+                name: "IX_Association_UserId",
                 table: "Association",
-                column: "id");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Association_weddingId",
+                name: "IX_Association_WeddingId",
                 table: "Association",
-                column: "weddingId");
+                column: "WeddingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Weddings_UserId",
+                table: "Weddings",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -88,10 +99,10 @@ namespace Project.Migrations
                 name: "Association");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Weddings");
 
             migrationBuilder.DropTable(
-                name: "Weddings");
+                name: "Users");
         }
     }
 }

@@ -1,24 +1,79 @@
 @using Project.Models
 @model Wedding
 
-    @{
-    ViewData["Title"] = "Wedding Details";
-    }
+@{
+ViewData["Title"] = "Wedding Details";
+}
 
-    <div class="text-center">
-        <h1 class="display-4">@Model.NameWedderOne and @Model.NameWedderTwo's Wedding</h1>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="font-weight-bold">Date: @Model.Day</div>
-            <p>@Model.Address</p>
-            <p>Guests:</p>
+<div class="text-center">
+    <h1 class="display-4">@Model.NameWedderOne and @Model.NameWedderTwo's Wedding</h1>
+</div>
+<div class="container">
+
+    <div class="font-weight-bold">Date: @Model.Day</div>
+    <p>@Model.Address</p>
+    <p>Guests:</p>
 
 
-        </div>
-    </div>
+    <h4>Address:</h4>
+    <!--The div element for the map -->
+    <div id="map"></div>
+    <script>
+        // Initialize and add the map
+        function initMap() {
+            codeAddress("@Model.Address")
+        }
+
+        var geocoder, map;
+
+        function codeAddress(address) {
+            geocoder = new google.maps.Geocoder();
+            geocoder.geocode({
+                'address': address
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    var myOptions = {
+                        zoom: 12,
+                        center: results[0].geometry.location,
+                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                    }
+                    map = new google.maps.Map(document.getElementById("map"), myOptions);
+
+                    var marker = new google.maps.Marker({
+                        map: map,
+                        position: results[0].geometry.location
+                    });
+                }
+            });
+        }
+
+
+
+
+
+
+
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd4L-LluRJIC1O--16khA31aYqCKMbztg&callback=initMap">
+
+        </script>
+
+
+</div>
 
 <!-- Basic Links -->
-<a href="/products">Home</a>
-<a href="/products">Log out</a>
-    
+<a href="/weddings">Home</a>
+<a href="/logout">Log out</a>
+
+</script>
+<!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
