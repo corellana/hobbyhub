@@ -23,7 +23,7 @@
             <tr>
                 <td><a href="/weddings/@wedding.WeddingId">@wedding.NameWedderOne & @wedding.NameWedderTwo</a></td>
                 <td>@wedding.Day</td>
-                <td>#count</td>
+                <td>@wedding.Guests.Count()</td>
                 <td>
                     @if(@wedding.Creator.UserId == ViewBag.CurrentUser.UserId)
                     {
