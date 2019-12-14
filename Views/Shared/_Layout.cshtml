@@ -46,7 +46,10 @@
                 </div>
                 <div>
                     <a class="header-home" href="/weddings">Home</a>
-                    <a href="/logout">Log out</a>
+                    @if (ViewBag.CurrentUser != null)
+                    {
+                        <a href="/logout">Log out</a>
+                    }
                 </div>
             </div>
         </nav>

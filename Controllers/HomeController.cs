@@ -17,11 +17,6 @@ namespace Project.Controllers
         {
             dbContext = context;
         }
-        
-        public IActionResult Index()
-        {
-            return Redirect("/register");
-        }
 
         public IActionResult Privacy()
         {

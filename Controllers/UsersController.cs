@@ -14,12 +14,30 @@ namespace Project.Controllers
 {
     public class UsersController : Controller
     {
+        private static string SUCCESS_URL = "/weddings";
+
         private MyContext dbContext;
 
         // here we can "inject" our context service into the constructor
         public UsersController(MyContext context)
         {
             dbContext = context;
+        }
+
+        [HttpGet]
+        [Route("")]
+        public IActionResult Index()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser != null)
+            {
+                return Redirect(SUCCESS_URL);
+            }
+
+            // Cambiar returns para separar logins
+            // return Redirect("/login");
+            return View();
         }
 
         [HttpGet]
@@ -32,7 +50,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser != null)
             {
-                return Redirect("/weddings");
+                return Redirect(SUCCESS_URL);
             }
             return View();
         }
@@ -63,7 +81,7 @@ namespace Project.Controllers
             dbContext.SaveChanges();
 
             HttpContext.Session.SetInt32("UserId", theUser.UserId);
-            return Redirect("/weddings");
+            return Redirect(SUCCESS_URL);
         }
 
         [HttpGet]
@@ -107,7 +125,7 @@ namespace Project.Controllers
             }
 
             HttpContext.Session.SetInt32("UserId", userInDb.UserId);
-            return Redirect("/weddings");
+            return Redirect(SUCCESS_URL);
         }
 
         [HttpGet]
@@ -115,7 +133,7 @@ namespace Project.Controllers
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
-            return Redirect("/login");
+            return Redirect("/");
         }
     }
 }

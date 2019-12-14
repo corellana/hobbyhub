@@ -28,7 +28,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             ViewBag.CurrentUser = currentUser;
 
@@ -38,6 +38,7 @@ namespace Project.Controllers
                 .ThenInclude(a => a.User)
                 .ToList();
             ViewBag.AllWeddings = AllWeddings;
+            
             return View(AllWeddings);
         }
 
@@ -49,7 +50,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             return View();
         }
@@ -62,7 +63,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             if (ModelState.IsValid)
             {
@@ -84,8 +85,10 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
+            ViewBag.CurrentUser = currentUser;
+
             Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == WeddingId);
             if (theWedding == null)
             {
@@ -102,7 +105,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             //Obtengo el wedding
             Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
@@ -126,7 +129,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             //Obtengo el wedding
             Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
@@ -165,7 +168,7 @@ namespace Project.Controllers
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
-                return Redirect("/register");
+                return Redirect("/login");
             }
             //Obtengo el wedding
             Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
