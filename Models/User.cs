@@ -13,15 +13,10 @@ namespace Project.Models
         public int UserId { get; set; }
         // MySQL VARCHAR and TEXT types can be represeted by a string
 
-        // First Name ------------------------------------------------------------
-        [Required(ErrorMessage = "You must enter a First Name")]
+        // Name ------------------------------------------------------------
+        [Required(ErrorMessage = "You must enter a Name")]
         [MinLength(2, ErrorMessage = "First Name must be at least 2 characters")]
-        public string FirstName { get; set; }
-
-        // Last Name ------------------------------------------------------------
-        [Required(ErrorMessage = "You must enter a Last Name")]
-        [MinLength(2, ErrorMessage = "Last Name must be at least 2 characters")]
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         // Email ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter an email")]
@@ -46,6 +41,6 @@ namespace Project.Models
         public string Confirm { get; set; }
 
         // Relationship ------------------------------------------------------------------------------------
-        public List<Association> Weddings { get; set; }
+        // public List<Association> Weddings { get; set; }
     }
 }

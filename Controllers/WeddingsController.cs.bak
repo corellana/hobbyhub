@@ -199,7 +199,7 @@ namespace Project.Controllers
         // hash the email
         // aplication//// storage... cookies
         // No mostrar "Logout" si ya estoy deslogeado
-        //Weddings expire when the scheduled date passes, and are removed from the database.
+        // Weddings expire when the scheduled date passes, and are removed from the database.
 
 
 

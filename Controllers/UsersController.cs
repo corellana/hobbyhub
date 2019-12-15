@@ -14,7 +14,7 @@ namespace Project.Controllers
 {
     public class UsersController : Controller
     {
-        private static string SUCCESS_URL = "/weddings";
+        private static string SUCCESS_URL = "/cdactivities";
 
         private MyContext dbContext;
 

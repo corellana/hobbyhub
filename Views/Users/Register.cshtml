@@ -16,15 +16,9 @@ ViewData["Title"] = "Home Page - Register";
             <form asp-action="Create" asp-controller="Users" method="post">
                 <!-- First Name -->
                 <div class="form-group">
-                    <span asp-validation-for="FirstName"></span>
-                    <label asp-for="FirstName">First Name:</label>
-                    <input type="text" class="form-control" asp-for="FirstName" placeholder="Your First Name">
-                </div>
-                <!-- Last Name -->
-                <div class="form-group">
-                    <span asp-validation-for="LastName"></span>
-                    <label asp-for="LastName">Last Name:</label>
-                    <input type="text" class="form-control" asp-for="LastName" placeholder="Your Last Name">
+                    <span asp-validation-for="Name"></span>
+                    <label asp-for="Name">Name:</label>
+                    <input type="text" class="form-control" asp-for="Name" placeholder="Your Name">
                 </div>
                 <!-- Email -->
                 <div class="form-group">
