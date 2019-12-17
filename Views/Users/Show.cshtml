@@ -1,0 +1,22 @@
+@using Project.Models
+@model User
+
+@{
+ViewData["Title"] = "User Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">User Information</h1>
+</div>
+<div class="container">
+
+    <p class="font-weight-bold">Name: @Model.Name</p>
+    <p>Alias: @Model.Alias</p>
+    <p>Email: @Model.Email</p>
+    
+</div>
+
+<!-- Basic Links -->
+<a href="/ideas">Home</a>
+<a href="/logout">Log out</a>
+

@@ -14,18 +14,18 @@ namespace Project.Models
         // Name ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter a Name")]
         [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
-        // [RegularExpression("^.*(?=.{6,18})(?=.*[A-Za-z]).*$", ErrorMessage = "Your name should be only letters and spaces")]
+        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Your name should be only letters and spaces")]
         public string Name { get; set; }
 
         // Alias ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter an Alias")]
         [MinLength(2, ErrorMessage = "Your Alias must be at least 2 characters")]
-        // [RegularExpression("^.*(?=.{6,18})(?=.*[A-Za-z]).*$", ErrorMessage = "Your alias should be letters and numbers only")]
+        [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Your alias should be letters and numbers only")]
         public string Alias { get; set; }
 
         // Email ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter an email")]
-        // [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
+
         public string Email { get; set; }
 
         // Password ------------------------------------------------------------

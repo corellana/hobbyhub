@@ -125,6 +125,27 @@ namespace Project.Controllers
             return Redirect(SUCCESS_URL);
         }
 
+        [HttpGet("users/{userId}")]
+        public IActionResult Show(int UserId)
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/login");
+            }
+            ViewBag.CurrentUser = currentUser;
+
+            User theUser = dbContext.Users
+                .FirstOrDefault(w => w.UserId == UserId);
+
+            if (theUser == null)
+            {
+                return NotFound();
+            }
+            return View(theUser);
+        }
+
         [HttpGet]
         [Route("logout")]
         public IActionResult Logout()
