@@ -14,11 +14,10 @@ namespace Project.Controllers
 {
     public class UsersController : Controller
     {
-        private static string SUCCESS_URL = "/cdactivities";
+        private static string SUCCESS_URL = "/ideas";
 
         private MyContext dbContext;
 
-        // here we can "inject" our context service into the constructor
         public UsersController(MyContext context)
         {
             dbContext = context;
@@ -44,8 +43,6 @@ namespace Project.Controllers
         [Route("register")]
         public IActionResult Register()
         {
-            // List<User> AllUsers = dbContext.Users.ToList();
-            // TODO revisar por qué no está funcionando.
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser != null)

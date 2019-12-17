@@ -22,56 +22,47 @@ namespace Project.Migrations
                     b.Property<int>("AssociationId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("CdActivityId");
+                    b.Property<int>("IdeaId");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("AssociationId");
 
-                    b.HasIndex("CdActivityId");
+                    b.HasIndex("IdeaId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Associations");
                 });
 
-            modelBuilder.Entity("Project.Models.CdActivity", b =>
+            modelBuilder.Entity("Project.Models.Idea", b =>
                 {
-                    b.Property<int>("CdActivityId")
+                    b.Property<int>("IdeaId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<DateTime>("Date");
-
-                    b.Property<string>("Description")
-                        .IsRequired();
-
-                    b.Property<int>("Duration");
-
-                    b.Property<string>("DurationUnit")
-                        .IsRequired();
-
-                    b.Property<DateTime>("Time");
-
-                    b.Property<string>("Title")
+                    b.Property<string>("Detail")
                         .IsRequired();
 
                     b.Property<DateTime>("UpdatedAt");
 
                     b.Property<int>("UserId");
 
-                    b.HasKey("CdActivityId");
+                    b.HasKey("IdeaId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CdActivities");
+                    b.ToTable("Ideas");
                 });
 
             modelBuilder.Entity("Project.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Alias")
+                        .IsRequired();
 
                     b.Property<DateTime>("CreatedAt");
 
@@ -93,9 +84,9 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Association", b =>
                 {
-                    b.HasOne("Project.Models.CdActivity", "CdActivity")
-                        .WithMany("Guests")
-                        .HasForeignKey("CdActivityId")
+                    b.HasOne("Project.Models.Idea", "Idea")
+                        .WithMany("Liking")
+                        .HasForeignKey("IdeaId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Project.Models.User", "User")
@@ -104,7 +95,7 @@ namespace Project.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Project.Models.CdActivity", b =>
+            modelBuilder.Entity("Project.Models.Idea", b =>
                 {
                     b.HasOne("Project.Models.User", "Creator")
                         .WithMany()

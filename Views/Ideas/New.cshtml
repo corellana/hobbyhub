@@ -1,0 +1,33 @@
+@using Project.Models
+@model Idea
+
+@{
+ViewData["Title"] = "Create Idea";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Create a new bright Idea</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+
+            <form asp-action="Create" asp-controller="Ideas" method="post">
+                <!-- Details -->
+                <div class="form-group">
+                    <span asp-validation-for="Detail"></span>
+                    <label asp-for="Detail">Detail:</label>
+                    <input type="text" class="form-control" asp-for="Detail" placeholder="">
+                </div>
+                
+                
+
+                <button type="submit" class="btn btn-success">Add Idea</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Basic Links -->
+<a href="/ideas">Home</a>
+<a href="/logout">Log out</a>

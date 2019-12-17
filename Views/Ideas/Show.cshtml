@@ -1,0 +1,44 @@
+@using Project.Models
+@model Idea
+
+
+@{
+ViewData["Title"] = "Idea Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Idea Details</h1>
+</div>
+<div class="container">
+
+    <p class="font-weight-bold"> @Model.Creator.Name says:</p>
+    <h2>@Model.Detail</h2>
+    <h4>People how liked this post:</h4>
+    @* @{foreach (Association liked in Model.Liking){
+        <ul>
+            <li>@liked.User.Alias & @liked.User.Name</li>
+        </ul>
+    }} *@
+</div>
+
+<table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Alias</th>
+                <th scope="col">Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{foreach (Association liked in Model.Liking){
+            <tr>
+                <td>@liked.User.Alias</td>
+                <td>@liked.User.Name</td>
+            </tr>
+            }}
+        </tbody>
+    </table>
+
+<!-- Basic Links -->
+<a href="/ideas">Home</a>
+<a href="/logout">Log out</a>
+

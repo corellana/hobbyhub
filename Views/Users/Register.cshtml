@@ -20,6 +20,12 @@ ViewData["Title"] = "Home Page - Register";
                     <label asp-for="Name">Name:</label>
                     <input type="text" class="form-control" asp-for="Name" placeholder="Your Name">
                 </div>
+                <!-- Alias -->
+                <div class="form-group">
+                    <span asp-validation-for="Alias"></span>
+                    <label asp-for="Alias">Alias:</label>
+                    <input type="text" class="form-control" asp-for="Alias" placeholder="Alias">
+                </div>
                 <!-- Email -->
                 <div class="form-group">
                     <span asp-validation-for="Email"></span>
@@ -38,7 +44,8 @@ ViewData["Title"] = "Home Page - Register";
                     <input type="password" class="form-control" asp-for="Confirm">
                 </div>
                 <!-- Submit -->
-                <p>By clicking on Sign up, you agree to <a href="/users/login" class="btn btn-link">Carito's Terms and Conditions of Use.</a></p>
+                <p>By clicking on Sign up, you agree to <a href="/users/login" class="btn btn-link">Carito's Terms and
+                        Conditions of Use.</a></p>
                 <button type="submit" class="btn btn-success btn-block">Submit</button>
                 <p class="question">Already have an account?<a href="/login" class="btn btn-link">Login</a></p>
             </form>

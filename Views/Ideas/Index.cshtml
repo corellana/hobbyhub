@@ -1,0 +1,55 @@
+@using Project.Models
+@model List<Idea>
+
+    @{
+    ViewData["Title"] = "Bright Ideas";
+    }
+
+    <div class="text-center">
+        <h1 class="display-4">Welcome to Bright Ideas App</h1>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Creator</th>
+                <th scope="col">Idea</th>
+                <th scope="col">Likes</th>
+                <th scope="col">Creator</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{foreach (Idea idea in Model){
+            <tr>
+                <td>@idea.Creator.Name</td>
+                <td><a href="/ideas/@idea.IdeaId">@idea.Detail</a></td>
+                <td>@idea.Liking.Count()</td>
+                <td>
+                    @if(@idea.Creator.UserId == ViewBag.CurrentUser.UserId)
+                    {
+                    <form action="/ideas/@idea.IdeaId/destroy" method="post">
+                        <button class="btn btn-secondary btn-sm">Delete</button>
+                    </form>
+                    }
+                    else if(idea.HasLike(ViewBag.CurrentUser))
+                    {
+                    <form action="/ideas/@idea.IdeaId/unrsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">Dislike</button>
+                    </form>
+                    }
+                    else
+                    {
+                    <form action="/ideas/@idea.IdeaId/rsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">Like</button>
+                    </form>
+                    }
+                </td>
+            </tr>
+            }}
+        </tbody>
+    </table>
+
+    <!-- Basic Links -->
+    <a href="/ideas/new" class="btn btn-link">New Idea</a>
+    <a href="/logout">Log out</a>

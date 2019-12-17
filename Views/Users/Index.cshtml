@@ -6,7 +6,7 @@ ViewData["Title"] = "Home";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome to my bakan App</h1>
+    <h1 class="display-4">Welcome to Bright Ideas App</h1>
 </div>
 
 <div class="row">
@@ -56,6 +56,12 @@ ViewData["Title"] = "Home";
                             <span asp-validation-for="Name"></span>
                             <label asp-for="Name">Name:</label>
                             <input type="text" class="form-control" asp-for="Name" placeholder="Name">
+                        </div>
+                        <!-- Alias -->
+                        <div class="form-group">
+                            <span asp-validation-for="Alias"></span>
+                            <label asp-for="Alias">Alias:</label>
+                            <input type="text" class="form-control" asp-for="Alias" placeholder="Alias">
                         </div>
                         <!-- Email -->
                         <div class="form-group">
