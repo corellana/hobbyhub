@@ -1,0 +1,28 @@
+@using Project.Models
+@model CdActivity
+
+
+@{
+ViewData["Title"] = "Actvity Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">@Model.Title</h1>
+</div>
+<div class="container">
+
+    <h4 class="font-weight-bold">Event Coordinator: @Model.Creator.Name</h4>
+    <p>Description:</p>
+    <p>@Model.Description</p>
+    <h4>Participants:</h4>
+    @{foreach (Association guest in Model.Guests){
+        <ul>
+            <li>@guest.User.Name</li>
+        </ul>
+    }}
+</div>
+
+<!-- Basic Links -->
+<a href="/cdactivities">Home</a>
+<a href="/logout">Log out</a>
+

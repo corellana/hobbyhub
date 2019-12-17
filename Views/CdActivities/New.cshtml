@@ -1,0 +1,57 @@
+@using Project.Models
+@model CdActivity
+
+@{
+ViewData["Title"] = "Activity Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Plan your Activity</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+
+            <form asp-action="Create" asp-controller="CdActivities" method="post">
+                <!-- Title -->
+                <div class="form-group">
+                    <span asp-validation-for="Title"></span>
+                    <label asp-for="Title">Title:</label>
+                    <input type="text" class="form-control" asp-for="Title" placeholder="">
+                </div>
+                <!-- Date REPASAR -->
+                <div class="form-group">
+                    <span asp-validation-for="Date"></span>
+                    <label asp-for="Date">Date:</label>
+                    @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control" }
+                    })
+                </div>
+                <!-- Time -->
+                <div class="form-group">
+                    <span asp-validation-for="Time"></span>
+                    <label asp-for="Time">Time:</label>
+                    @Html.EditorFor(model => model.Time, new { htmlAttributes = new { @class = "form-control" }
+                    })
+                </div>
+                <!-- Duration -->
+                <div class="form-group">
+                    <span asp-validation-for="Duration"></span>
+                    <label asp-for="Duration">Duration:</label>
+                    <input type="text" class="form-control" asp-for="Duration" placeholder="">
+                </div>
+                <!-- Description -->
+                <div class="form-group">
+                    <span asp-validation-for="Description"></span>
+                    <label asp-for="Description">Description:</label>
+                    <input type="text" class="form-control" asp-for="Description" placeholder="">
+                </div>
+
+                <button type="submit" class="btn btn-success">Create</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Basic Links -->
+<a href="/cdactivities">Home</a>
+<a href="/logout">Log out</a>

@@ -27,6 +27,7 @@ namespace Project.Models
         [Required(ErrorMessage = "You must enter an password")]
         [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
+        [RegularExpression("^.*(?=.{6,18})(?=.*[0-9])(?=.*[A-Za-z])(?=.*[@%&#]{1,}).*$", ErrorMessage = "kkkk")]
         public string Password { get; set; }
 
         // Create and Update  ------------------------------------------------------------

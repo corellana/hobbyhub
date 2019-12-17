@@ -10,18 +10,18 @@ using Microsoft.AspNetCore.Http;
 
 namespace Project.Controllers
 {
-    public class WeddingsController : Controller
+    public class CdActivitiesController : Controller
     {
         private MyContext dbContext;
 
-        // here we can "inject" our context service into the constructor
-        public WeddingsController(MyContext context)
+        //here we can "inject" our context service into the constructor
+        public CdActivitiesController(MyContext context)
         {
             dbContext = context;
         }
 
         [HttpGet]
-        [Route("weddings")]
+        [Route("cdactivities")]
         public IActionResult Index()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -30,20 +30,22 @@ namespace Project.Controllers
             {
                 return Redirect("/login");
             }
-            ViewBag.CurrentUser = currentUser;
+            ViewBag.CurrentUser = currentUser; // REPASAR
 
-            List<Wedding> AllWeddings = dbContext.Weddings
-                .Include(w => w.Creator)
+            List<CdActivity> AllCdActivities = dbContext.CdActivities 
+                .OrderBy(a => a.Date)
+                .Where(a => a.Date > DateTime.Now)
+                .Include(w => w.Creator) // REPASAR
                 .Include(w => w.Guests)
                 .ThenInclude(a => a.User)
                 .ToList();
-            ViewBag.AllWeddings = AllWeddings;
+            ViewBag.AllCdActivities = AllCdActivities;
             
-            return View(AllWeddings);
+            return View(AllCdActivities);
         }
 
         [HttpGet]
-        [Route("weddings/new")]
+        [Route("cdactivities/new")]
         public IActionResult New()
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -56,8 +58,8 @@ namespace Project.Controllers
         }
 
         [HttpPost]
-        [Route("weddings")]
-        public IActionResult Create(Wedding wedding)
+        [Route("cdactivities")]
+        public IActionResult Create(CdActivity cdactivity)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
@@ -67,19 +69,19 @@ namespace Project.Controllers
             }
             if (ModelState.IsValid)
             {
-                wedding.Creator = currentUser;
-                dbContext.Weddings.Add(wedding);
+                cdactivity.Creator = currentUser;
+                dbContext.CdActivities.Add(cdactivity);
                 dbContext.SaveChanges();
-                return Redirect("weddings");
+                return Redirect("cdactivities");
             }
             else
             {
-                return View("New", wedding);
+                return View("New", cdactivity);
             }
         }
 
-        [HttpGet("weddings/{weddingId}")]
-        public IActionResult Show(int WeddingId)
+        [HttpGet("cdactivities/{cdactivityId}")]
+        public IActionResult Show(int CdactivityId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
@@ -89,17 +91,21 @@ namespace Project.Controllers
             }
             ViewBag.CurrentUser = currentUser;
 
-            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == WeddingId);
-            if (theWedding == null)
+            CdActivity theCdActivity = dbContext.CdActivities
+                .Include(u => u.Guests)
+                .ThenInclude(u => u.User)
+                .FirstOrDefault(w => w.CdActivityId == CdactivityId);
+
+            if (theCdActivity == null)
             {
                 return NotFound();
             }
-            return View(theWedding);
+            return View(theCdActivity);
         }
 
         [HttpPost]
-        [Route("weddings/{weddingId}/destroy")]
-        public IActionResult Destroy(int weddingId)
+        [Route("cdactivities/{cdactivityId}/destroy")]
+        public IActionResult Destroy(int cdactivityId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
@@ -108,22 +114,22 @@ namespace Project.Controllers
                 return Redirect("/login");
             }
             //Obtengo el wedding
-            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
-            if (theWedding == null)
+            CdActivity theCdActivity = dbContext.CdActivities.FirstOrDefault(w => w.CdActivityId == cdactivityId);
+            if (theCdActivity == null)
             {
                 return NotFound();
             }
-            if (theWedding.Creator.UserId == currentUser.UserId)
+            if (theCdActivity.Creator.UserId == currentUser.UserId)
             {
-                dbContext.Weddings.Remove(theWedding);
+                dbContext.CdActivities.Remove(theCdActivity);
                 dbContext.SaveChanges();
             }
-            return Redirect("/weddings");
+            return Redirect("/cdactivities");
         }
 
         [HttpPost]
-        [Route("weddings/{weddingId}/rsvp")]
-        public IActionResult RSVP(int weddingId)
+        [Route("cdactivities/{cdactivityId}/rsvp")]
+        public IActionResult RSVP(int cdactivityId)
         {
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
@@ -132,36 +138,49 @@ namespace Project.Controllers
                 return Redirect("/login");
             }
             //Obtengo el wedding
-            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
-            if (theWedding == null)
+            CdActivity theCdActivity = dbContext.CdActivities.FirstOrDefault(w => w.CdActivityId == cdactivityId);
+            if (theCdActivity == null)
             {
                 return NotFound();
             }
             // Found if the user already confirm asistance
-            Association existingRSVP = dbContext.Association
-                .Where(a => a.User == currentUser && a.Wedding == theWedding)
+            Association existingRSVP = dbContext.Associations
+                .Where(a => a.User == currentUser && a.CdActivity == theCdActivity)
                 .FirstOrDefault();
             if (existingRSVP != null)
             {
-                return BadRequest(); //TODO Notices.
+                return BadRequest(); //TODO Notices. REPASAR
             }
+            // Search all User Association, including the activity and compare
+            List<Association> allRSVP = dbContext.Associations
+                .Where(a => a.User == currentUser)
+                .Include(a => a.CdActivity)
+                .ToList();
+                foreach(Association anrsvp in allRSVP)
+                {
+                    if(anrsvp.CdActivity.Overlaps(theCdActivity) )
+                    {
+                        return Redirect("/cdactivities");
+                    }
+                }
+
 
             // Crear la asociacion y guardar ese RSVP como una nueva linea en la tabla association
             Association rsvp = new Association();
-            rsvp.Wedding = theWedding;
+            rsvp.CdActivity = theCdActivity;
             // rsvp.WeddingId = theWedding.WeddingId;
             // rsvp.WeddingId = weddingId;
 
             rsvp.User = currentUser;
-            dbContext.Association.Add(rsvp);
+            dbContext.Associations.Add(rsvp);
             dbContext.SaveChanges();
 
-            return Redirect("/weddings");
+            return Redirect("/cdactivities");
         }
 
         [HttpPost]
-        [Route("weddings/{weddingId}/unrsvp")]
-        public IActionResult UnRSVP(int weddingId)
+        [Route("cdactivities/{cdactivityId}/unrsvp")]
+        public IActionResult UnRSVP(int cdactivityId)
         {
             // estas en sesion?
             int? userId = HttpContext.Session.GetInt32("UserId");
@@ -171,23 +190,23 @@ namespace Project.Controllers
                 return Redirect("/login");
             }
             //Obtengo el wedding
-            Wedding theWedding = dbContext.Weddings.FirstOrDefault(w => w.WeddingId == weddingId);
-            if (theWedding == null)
+            CdActivity theCdActivity = dbContext.CdActivities.FirstOrDefault(w => w.CdActivityId == cdactivityId);
+            if (theCdActivity == null)
             {
                 return NotFound();
             }
             //Remover el rsvp
             //Encontrar la asociacion RSVP
-            Association unrsvp = dbContext.Association
-                .Where(a => a.User == currentUser && a.Wedding == theWedding)
+            Association unrsvp = dbContext.Associations
+                .Where(a => a.User == currentUser && a.CdActivity == theCdActivity)
                 .FirstOrDefault();
 
             if (unrsvp != null) {
-                dbContext.Association.Remove(unrsvp);
+                dbContext.Associations.Remove(unrsvp);
                 dbContext.SaveChanges();
             }
 
-            return Redirect("/weddings");
+            return Redirect("/cdactivities");
         }
 
         // No poder confirmar dos veces
@@ -200,12 +219,6 @@ namespace Project.Controllers
         // aplication//// storage... cookies
         // No mostrar "Logout" si ya estoy deslogeado
         // Weddings expire when the scheduled date passes, and are removed from the database.
-
-
-
-
-
-
 
     }
 
