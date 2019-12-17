@@ -22,6 +22,25 @@ ViewData["Title"] = "Actvity Details";
     }}
 </div>
 
+                    @if(Model.Creator.UserId == ViewBag.CurrentUser.UserId)
+                    {
+                    <form action="/cdactivities/@Model.CdActivityId/destroy" method="post">
+                        <button class="btn btn-secondary btn-sm">Delete</button>
+                    </form>
+                    }
+                    else if(Model.HasGuest(ViewBag.CurrentUser))
+                    {
+                    <form action="/cdactivities/@Model.CdActivityId/unrsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">Leave</button>
+                    </form>
+                    }
+                    else
+                    {
+                    <form action="/cdactivities/@Model.CdActivityId/rsvp" method="post">
+                        <button class="btn btn-secondary btn-sm">Join</button>
+                    </form>
+                    }
+
 <!-- Basic Links -->
 <a href="/cdactivities">Home</a>
 <a href="/logout">Log out</a>

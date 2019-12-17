@@ -9,8 +9,8 @@ using Project.Models;
 namespace Project.Migrations
 {
     [DbContext(typeof(MyContext))]
-    [Migration("20191216025822_associations")]
-    partial class associations
+    [Migration("20191217054334_cc")]
+    partial class cc
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,6 +50,9 @@ namespace Project.Migrations
                         .IsRequired();
 
                     b.Property<int>("Duration");
+
+                    b.Property<string>("DurationUnit")
+                        .IsRequired();
 
                     b.Property<DateTime>("Time");
 

@@ -40,6 +40,17 @@ ViewData["Title"] = "Activity Details";
                     <label asp-for="Duration">Duration:</label>
                     <input type="text" class="form-control" asp-for="Duration" placeholder="">
                 </div>
+                <!-- Duration Unit-->
+                <div class="form-group">
+                    <span asp-validation-for="DurationUnit"></span>
+                    <label asp-for="DurationUnit"></label>
+                    <select class="form-control" asp-for="DurationUnit">
+                        <option selected>Select an option</option>
+                        <option value="Hours">Hours</option>
+                        <option value="Days">Days</option>
+                        <option value="Minutes">Minutes</option>
+                    </select>
+                </div>
                 <!-- Description -->
                 <div class="form-group">
                     <span asp-validation-for="Description"></span>

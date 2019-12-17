@@ -24,8 +24,8 @@
             @{foreach (CdActivity cdactivity in Model){
             <tr>
                 <td><a href="/cdactivities/@cdactivity.CdActivityId">@cdactivity.Title</a></td>
-                <td>@cdactivity.Date & @cdactivity.Time </td>
-                <td>@cdactivity.Duration</td>
+                <td>@cdactivity.Date.ToString("d") @@ @cdactivity.Time.ToString("t") </td>
+                <td>@cdactivity.Duration @cdactivity.DurationUnit</td>
                 <td>@cdactivity.Creator.Name</td>
                 <td>@cdactivity.Guests.Count()</td>
                 <td>

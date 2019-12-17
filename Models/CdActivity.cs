@@ -41,6 +41,10 @@ namespace Project.Models
         // [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
         public int Duration { get; set; }
 
+        // Duration Unit -------------------------------------------------------------------------------------------
+        [Required(ErrorMessage = "You must enter duration unit")]
+        public String DurationUnit { get; set; }
+
         // Description -------------------------------------------------------------------------------------------
         [Required(ErrorMessage = "You must enter a Description")]
         [MinLength(2, ErrorMessage = "Descriptiom must be at least 2 characters")]

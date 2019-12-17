@@ -49,6 +49,9 @@ namespace Project.Migrations
 
                     b.Property<int>("Duration");
 
+                    b.Property<string>("DurationUnit")
+                        .IsRequired();
+
                     b.Property<DateTime>("Time");
 
                     b.Property<string>("Title")

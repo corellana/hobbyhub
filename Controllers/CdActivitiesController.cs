@@ -92,6 +92,7 @@ namespace Project.Controllers
             ViewBag.CurrentUser = currentUser;
 
             CdActivity theCdActivity = dbContext.CdActivities
+                .Include(u => u.Creator)
                 .Include(u => u.Guests)
                 .ThenInclude(u => u.User)
                 .FirstOrDefault(w => w.CdActivityId == CdactivityId);
