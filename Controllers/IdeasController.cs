@@ -30,7 +30,6 @@ namespace Project.Controllers
                 return Redirect("/login");
             }
             ViewBag.CurrentUser = currentUser;
-
             List<Idea> AllIdeas = dbContext.Ideas 
                 .OrderBy(a => a.Detail)
                 .Include(w => w.Creator)
@@ -39,7 +38,8 @@ namespace Project.Controllers
                 .ToList();
             ViewBag.AllIdeas = AllIdeas;
             
-            return View(AllIdeas);
+            // Lo que sea que le pase a la vista, se convierte en el model
+            return View();
         }
 
         [HttpGet]

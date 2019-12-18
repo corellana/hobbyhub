@@ -1,5 +1,5 @@
 @using Project.Models
-@model List<Idea>
+@model Idea
 
     @{
     ViewData["Title"] = "Bright Ideas";
@@ -13,7 +13,32 @@
         <div class="row">
             <h2>Hi @ViewBag.CurrentUser.Alias!</h2>
         </div>
+    </div>  
+
+    <div class="text-center">
+    <h1 class="display-4">Create a new bright Idea</h1>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+
+            <form asp-action="Create" asp-controller="Ideas" method="post">
+                <!-- Details -->
+                <div class="form-group">
+                    <span asp-validation-for="Detail"></span>
+                    <label asp-for="Detail">Detail:</label>
+                    @* <input type="textarea" class="form-control" asp-for="Detail" placeholder=""> *@
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" asp-for="Detail" placeholder="Your bright idea"></textarea>
+                </div>
+                
+                
+
+                <button type="submit" class="btn btn-success">Add Idea</button>
+            </form>
+        </div>
     </div>
+</div>
 
     <table class="table">
         <thead>
@@ -26,7 +51,7 @@
             </tr>
         </thead>
         <tbody>
-            @{foreach (Idea idea in Model){
+            @{foreach (Idea idea in ViewBag.AllIdeas){
             <tr>
                 <td>@idea.Creator.Name</td>
                 <td><a href="/ideas/@idea.IdeaId">@idea.Detail</a></td>
@@ -57,5 +82,5 @@
     </table>
 
     <!-- Basic Links -->
-    <a href="/ideas/new" class="btn btn-link">New Idea</a>
-    <a href="/logout">Log out</a>
+    <a href="/ideas/new" class="btn btn-link footer-button">New Idea</a>
+    <a href="/logout" class="btn btn-link footer-button">Log out</a>
