@@ -47,20 +47,12 @@ ViewData["Title"] = "Hobby Details";
 
 @* Like to this hobby! *@
 <p>Become an Enthusiast!</p>
-@if(Model.HasLike(ViewBag.CurrentUser))
-{
-<form action="/hobbies/@Model.HobbyId/unrsvp" method="post">
-    <button class="btn btn-secondary btn-sm">Remove from Hobbies</button>
-</form>
-}
-else
-{
 <form action="/hobbies/@Model.HobbyId/rsvp" method="post">
     <button class="btn btn-secondary btn-sm">Add to Hobbies</button>
 </form>
-}
 
 
 <!-- Basic Links -->
+<a href="/hobbies/@Model.HobbyId/edit" class="btn btn-link footer-button">Edit Hobby</a>
 <a href="/hobbies" class="btn btn-link footer-button">Home</a>
 <a href="/logout" class="btn btn-link footer-button">Log out</a>

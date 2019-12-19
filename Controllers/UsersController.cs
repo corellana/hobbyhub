@@ -54,6 +54,7 @@ namespace Project.Controllers
 
         [HttpPost]
         [Route("register")]
+
         public IActionResult Register(User theUser)
         {
             if (!ModelState.IsValid)
@@ -62,7 +63,8 @@ namespace Project.Controllers
                 return View("register", theUser);
             }
 
-            if (dbContext.Users.Any(user => user.Email == theUser.Email))
+            else{
+                if (dbContext.Users.Any(user => user.Email == theUser.Email))
             {
                 // Manually add a ModelState error to the Email field, with provided
                 // error message
@@ -79,6 +81,7 @@ namespace Project.Controllers
 
             HttpContext.Session.SetInt32("UserId", theUser.UserId);
             return Redirect(SUCCESS_URL);
+            }
         }
 
         [HttpGet]

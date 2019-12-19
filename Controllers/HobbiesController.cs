@@ -61,12 +61,21 @@ namespace Project.Controllers
         [Route("hobbies")]
         public IActionResult Create(Hobby hobby)
         {
+            // Login User
             int? userId = HttpContext.Session.GetInt32("UserId");
             var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
             if (currentUser == null)
             {
                 return Redirect("/login");
             }
+
+            // No duplicates Hobbies
+            if (dbContext.Hobbies.Any(h => h.Name == hobby.Name))
+            {
+                ModelState.AddModelError("Name", "Hobby Name already in use!");
+                return View("edit", hobby);
+            }
+
             if (ModelState.IsValid)
             {
                 hobby.Creator = currentUser;
@@ -102,6 +111,48 @@ namespace Project.Controllers
                 return NotFound();
             }
             return View(theHobby);
+        }
+
+        [HttpGet]
+        [Route("hobbies/{hobbyId}/edit")]
+        public IActionResult Edit(int hobbyId)
+        {
+            Hobby theHobby = dbContext.Hobbies.FirstOrDefault(h => h.HobbyId == hobbyId);
+
+            if (theHobby == null)
+            {
+                return NotFound();
+            }
+
+            return View(theHobby);
+        }
+
+
+        [HttpPost]
+        [Route("hobbies/{hobbyId}")]
+        public IActionResult Update(int hobbyId, Hobby formHobby)
+        {
+
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+            if (currentUser == null)
+            {
+                return Redirect("/login");
+            }
+
+            Hobby theHobby = dbContext.Hobbies.FirstOrDefault(h => h.HobbyId == hobbyId);
+            if (ModelState.IsValid)
+            {
+                theHobby.Name = formHobby.Name;
+                theHobby.Description = formHobby.Description;
+                theHobby.UpdatedAt = DateTime.Now;
+                dbContext.SaveChanges();
+                return Redirect($"/hobbies");
+            }
+            else
+            {
+                return View("Edit", formHobby);
+            }
         }
 
         [HttpPost]
@@ -149,7 +200,7 @@ namespace Project.Controllers
                 .FirstOrDefault();
             if (existingRSVP != null)
             {
-                return BadRequest(); 
+                return Redirect("/hobbies"); 
             }
             // Search all User Association, including the hobby and compare
             List<Association> allRSVP = dbContext.Associations
