@@ -9,38 +9,44 @@ ViewData["Title"] = "Idea Details";
 <div class="text-center">
     <h1 class="display-4">Idea Details</h1>
 </div>
-<div class="container">
 
-    <p class="font-weight-bold"> @Model.Creator.Name says:</p>
-    <h2>@Model.Detail</h2>
-    <h4>People how liked this post:</h4>
-    @* @{foreach (Association liked in Model.Liking){
-        <ul>
-            <li>@liked.User.Alias & @liked.User.Name</li>
-        </ul>
-    }} *@
+@* Detail Idea *@
+<div class="container">
+    <div class="row">
+        <div class="border col-lg detail-idea">
+            <p><span class="font-weight-bold"> @Model.Creator.Name</span> says:</p>
+            <h2 class="">@Model.Detail</h2>
+        </div>
+    </div>
 </div>
 
-<table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Alias</th>
-                <th scope="col">Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{foreach (Association liked in Model.Liking){
-            <tr>
-                <td>@liked.User.Alias</td>
-                <td>@liked.User.Name</td>
-            </tr>
-            }}
-        </tbody>
-    </table>
+@* People how like this idea *@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 likes-list">
+            <h4> People how like this idea:</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Alias</th>
+                        <th scope="col">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{foreach (Association liked in Model.Liking){
+                    <tr>
+                        <td>@liked.User.Alias</td>
+                        <td>@liked.User.Name</td>
+                    </tr>
+                    }}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+
 
 <!-- Basic Links -->
-<button href="/ideas" type="button" class="btn btn-light">Home</button>
-<button href="/logout" type="button" class="btn btn-light">Log Out</button>
 <a href="/ideas" class="btn btn-link footer-button">Home</a>
 <a href="/logout" class="btn btn-link footer-button">Log out</a>
-

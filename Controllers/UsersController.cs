@@ -134,11 +134,14 @@ namespace Project.Controllers
             {
                 return Redirect("/login");
             }
+
             ViewBag.CurrentUser = currentUser;
 
             User theUser = dbContext.Users
+                .Include(u => u.Ideas)
+                .Include(u => u.Likes)
                 .FirstOrDefault(w => w.UserId == UserId);
-
+                
             if (theUser == null)
             {
                 return NotFound();

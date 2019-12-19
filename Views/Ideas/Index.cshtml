@@ -1,86 +1,126 @@
 @using Project.Models
 @model Idea
 
-    @{
-    ViewData["Title"] = "Bright Ideas";
-    }
+@{
+ViewData["Title"] = "Bright Ideas";
+}
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome to Bright Ideas App</h1>
-    </div>
-
-    <div class="container">
-        <div class="row">
-            <h2>Hi @ViewBag.CurrentUser.Alias!</h2>
-        </div>
-    </div>  
-
-    <div class="text-center">
-    <h1 class="display-4">Create a new bright Idea</h1>
+<div class="text-center">
+    <h1 class="display-4">Welcome to Bright Ideas App</h1>
 </div>
-
+@* Hi *@
 <div class="container">
     <div class="row">
-        <div class="col-lg">
+        <div class="hi">
+            <h2>Hi @ViewBag.CurrentUser.Alias!</h2>
+        </div>
 
+    </div>
+</div>
+
+@* Create an Idea *@
+<div class="container">
+    <div class="row">
+        <div class="col-lg create-idea">
+            <h3>
+                </p>Create a new bright Idea:</h3>
             <form asp-action="Create" asp-controller="Ideas" method="post">
                 <!-- Details -->
                 <div class="form-group">
                     <span asp-validation-for="Detail"></span>
                     <label asp-for="Detail">Detail:</label>
                     @* <input type="textarea" class="form-control" asp-for="Detail" placeholder=""> *@
-                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" asp-for="Detail" placeholder="Your bright idea"></textarea>
+                    <textarea class="form-control" id="" rows="3" asp-for="Detail"
+                        placeholder="Your bright idea"></textarea>
                 </div>
-                
-                
-
-                <button type="submit" class="btn btn-success">Add Idea</button>
+                <button type="submit" class="btn btn-success float-right">Add Idea</button>
             </form>
         </div>
     </div>
 </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Creator</th>
-                <th scope="col">Idea</th>
-                <th scope="col">Likes</th>
-                <th scope="col">Creator</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @{foreach (Idea idea in ViewBag.AllIdeas){
-            <tr>
-                <td>@idea.Creator.Name</td>
-                <td><a href="/ideas/@idea.IdeaId">@idea.Detail</a></td>
-                <td>@idea.Liking.Count()</td>
-                <td>
-                    @if(@idea.Creator.UserId == ViewBag.CurrentUser.UserId)
-                    {
-                    <form action="/ideas/@idea.IdeaId/destroy" method="post">
-                        <button class="btn btn-secondary btn-sm">Delete</button>
-                    </form>
-                    }
-                    else if(idea.HasLike(ViewBag.CurrentUser))
-                    {
-                    <form action="/ideas/@idea.IdeaId/unrsvp" method="post">
-                        <button class="btn btn-secondary btn-sm">Dislike</button>
-                    </form>
-                    }
-                    else
-                    {
-                    <form action="/ideas/@idea.IdeaId/rsvp" method="post">
-                        <button class="btn btn-secondary btn-sm">Like</button>
-                    </form>
-                    }
-                </td>
-            </tr>
-            }}
-        </tbody>
-    </table>
+@* <table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Creator</th>
+            <th scope="col">Idea</th>
+            <th scope="col">Likes</th>
+            <th scope="col">Creator</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (Idea idea in ViewBag.AllIdeas){
+        <tr>
+            <td>@idea.Creator.Name</td>
+            <td><a href="/ideas/@idea.IdeaId">@idea.Detail</a></td>
+            <td>@idea.Liking.Count()</td>
+            <td>
+                @if(@idea.Creator.UserId == ViewBag.CurrentUser.UserId)
+                {
+                <form action="/ideas/@idea.IdeaId/destroy" method="post">
+                    <button class="btn btn-secondary btn-sm">Delete</button>
+                </form>
+                }
+                else if(idea.HasLike(ViewBag.CurrentUser))
+                {
+                <form action="/ideas/@idea.IdeaId/unrsvp" method="post">
+                    <button class="btn btn-secondary btn-sm">Dislike</button>
+                </form>
+                }
+                else
+                {
+                <form action="/ideas/@idea.IdeaId/rsvp" method="post">
+                    <button class="btn btn-secondary btn-sm">Like</button>
+                </form>
+                }
+            </td>
+        </tr>
+        }}
+    </tbody>
+</table> *@
 
-    <!-- Basic Links -->
-    <a href="/ideas/new" class="btn btn-link footer-button">New Idea</a>
-    <a href="/logout" class="btn btn-link footer-button">Log out</a>
+@* Ideas List *@
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            @{foreach (Idea idea in ViewBag.AllIdeas){
+            <div class="border idea-list">
+                <p><span class="font-weight-bold">@idea.Creator.Alias</span> says:</p>
+                <p><span class=" detail-idea">@idea.Detail</span></p>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="row actions-container">
+                            @if (idea.Liking.Count <= 1)
+                            {
+                                <p>@idea.Liking.Count person like this.</p>
+                            }
+                            else{
+                                <p>@idea.Liking.Count people like this.</p>
+                            }
+                        
+                            @* Likes and Delete Actions *@
+                            @if(@idea.Creator.UserId == ViewBag.CurrentUser.UserId)
+                            {
+                                <form action="/ideas/@idea.IdeaId/destroy" method="post">
+                                <button class="btn btn-outline-dark dark-button">Delete</button>
+                                </form>
+                            //REPASAR
+                            }
+                            <form action="/ideas/@idea.IdeaId/rsvp" method="post">
+                                <button class="btn btn-outline-dark dark-button">Like</button>
+                            </form>
+                    </div>
+                </div>
+            </div>
+
+            }}
+        </div>
+    </div>
+</div>
+
+@* Basic Links *@
+<a href="/ideas/new" class="btn btn-link footer-button">New Idea</a>
+<a href="/ideas" class="btn btn-link footer-button">Home</a>
+<a href="/logout" class="btn btn-link footer-button">Log out</a>

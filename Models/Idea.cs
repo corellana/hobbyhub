@@ -27,15 +27,14 @@ namespace Project.Models
         public User Creator { get; set; }
         public int UserId {get; set;}
 
-        public bool HasLike(User liked)
-        {
-            return Liking.Any(g => g.User.UserId == liked.UserId);
-        }
 
-        // internal bool Overlaps(CdActivity theCdActivity)
-        // {
-        //     return false;
-        // }
+
+
+
+        public bool HasLike(User aUser)
+        {
+            return Liking.Any(like => like.User.UserId == aUser.UserId);
+        }
     }
 }
 

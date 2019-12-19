@@ -8,15 +8,32 @@ ViewData["Title"] = "User Details";
 <div class="text-center">
     <h1 class="display-4">User Information</h1>
 </div>
-<div class="container">
 
-    <p class="font-weight-bold">Name: @Model.Name</p>
-    <p>Alias: @Model.Alias</p>
-    <p>Email: @Model.Email</p>
-    
+@* Detail User *@
+<div class="container">
+    <div class="row">
+        <div class="border col-lg detail-idea">
+            <p><span class="font-weight-bold">Name: </span>@Model.Name</p>
+            <p><span class="font-weight-bold">Alias: </span>@Model.Alias</p>
+            <p><span class="font-weight-bold">Email: </span>@Model.Email</p>
+        </div>
+    </div>
 </div>
 
-<!-- Basic Links -->
-<a href="/ideas">Home</a>
-<a href="/logout">Log out</a>
+@* Likes details*@
+<div class="container">
+    <div class="row">
+        <div class="post-details col-sm-6">
+            <h4>@Model.Alias Post details:</h4>
+            <p><span class="font-weight-bold">Total Number of Post:</span>@Model.Ideas.Count()</p>
+            <p><span class="font-weight-bold">Total Number of Likes:</span>@Model.Likes.Count()</p>
+        </div>
+
+    </div>
+</div>
+
+
+@* Basic Links *@
+<a href="/ideas" class="btn btn-link footer-button">Home</a>
+<a href="/logout" class="btn btn-link footer-button">Log out</a>
 

@@ -30,11 +30,13 @@ namespace Project.Controllers
                 return Redirect("/login");
             }
             ViewBag.CurrentUser = currentUser;
+
             List<Idea> AllIdeas = dbContext.Ideas 
-                .OrderBy(a => a.Detail)
-                .Include(w => w.Creator)
-                .Include(w => w.Liking)
-                .ThenInclude(a => a.User)
+                .OrderBy(i => i.Detail)
+                .Include(i => i.Creator)
+                .Include(i => i.Liking)
+                .ThenInclude(i => i.User)
+                .OrderByDescending(i => i.Liking.Count())
                 .ToList();
             ViewBag.AllIdeas = AllIdeas;
             

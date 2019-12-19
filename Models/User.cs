@@ -47,6 +47,8 @@ namespace Project.Models
         public string Confirm { get; set; }
 
         // Relationship ------------------------------------------------------------------------------------
-        // public List<Association> Weddings { get; set; }
+        public List<Association> Likes { get; set; }
+        
+        public List<Idea> Ideas { get; set;}
     }
 }

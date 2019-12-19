@@ -60,7 +60,54 @@ body {
   padding-right: 50px;
 }
 
+.hi{
+  padding: 20px;
+}
+
+.create-idea{
+  padding-bottom: 60px;;
+}
+
+.idea-list{
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+
+
 .footer-button{
+  padding-top:50px;
   margin: 8px;
   color: green;
+}
+.detail-idea{
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-left: 10px;
+  margin-top: 20px;
+  
+}
+
+.subtitle{
+  padding-top: 80px;
+  padding-bottom: 20px;
+}
+
+.likes-list{
+  padding-top: 60px;
+}
+
+.post-details{
+  padding-top: 40px;
+}
+
+.dark-button{
+  margin-right:5px;
+  margin-left: 5px;
+}
+
+.actions-container {
+  padding-bottom: 40px;
 }
