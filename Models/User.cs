@@ -9,30 +9,31 @@ namespace Project.Models
     {
         [Key]
         public int UserId { get; set; }
-        // MySQL VARCHAR and TEXT types can be represeted by a string
 
-        // Name ------------------------------------------------------------
-        [Required(ErrorMessage = "You must enter a Name")]
+        // First Name ------------------------------------------------------------
+        [Required(ErrorMessage = "You must enter your First Name")]
         [MinLength(2, ErrorMessage = "Name must be at least 2 characters")]
-        [RegularExpression("^[A-Za-z ]+$", ErrorMessage = "Your name should be only letters and spaces")]
-        public string Name { get; set; }
+        public string FirstName { get; set; }
 
-        // Alias ------------------------------------------------------------
-        [Required(ErrorMessage = "You must enter an Alias")]
+        // Last Name ------------------------------------------------------------
+        [Required(ErrorMessage = "You must enter your Last Name")]
         [MinLength(2, ErrorMessage = "Your Alias must be at least 2 characters")]
-        [RegularExpression("^[a-zA-Z0-9]*$", ErrorMessage = "Your alias should be letters and numbers only")]
-        public string Alias { get; set; }
+        public string LastName { get; set; }
+
+        // Username ------------------------------------------------------------
+        [Required(ErrorMessage = "You must enter your Username")]
+        [RegularExpression("^[a-zA-Z]{3,15}$", ErrorMessage = "Your username must be between 3 and 15 characters")]
+        public string Username { get; set; }
 
         // Email ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter an email")]
-
+        [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage = "You need a valid format for your email")]
         public string Email { get; set; }
 
         // Password ------------------------------------------------------------
         [Required(ErrorMessage = "You must enter an password")]
         [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters")]
-        // [RegularExpression("^.*(?=.{6,18})(?=.*[0-9])(?=.*[A-Za-z])(?=.*[@%&#]{1,}).*$", ErrorMessage = "Your password need at least a letter, a number and a special character")]
         public string Password { get; set; }
 
         // Create and Update  ------------------------------------------------------------
@@ -49,6 +50,6 @@ namespace Project.Models
         // Relationship ------------------------------------------------------------------------------------
         public List<Association> Likes { get; set; }
         
-        public List<Idea> Ideas { get; set;}
+        public List<Hobby> Hobbies { get; set;}
     }
 }

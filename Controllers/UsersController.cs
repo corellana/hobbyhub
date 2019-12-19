@@ -14,7 +14,7 @@ namespace Project.Controllers
 {
     public class UsersController : Controller
     {
-        private static string SUCCESS_URL = "/ideas";
+        private static string SUCCESS_URL = "/hobbies";
 
         private MyContext dbContext;
 
@@ -138,7 +138,7 @@ namespace Project.Controllers
             ViewBag.CurrentUser = currentUser;
 
             User theUser = dbContext.Users
-                .Include(u => u.Ideas)
+                .Include(u => u.Hobbies)
                 .Include(u => u.Likes)
                 .FirstOrDefault(w => w.UserId == UserId);
                 

@@ -1,0 +1,66 @@
+@using Project.Models
+@model Hobby
+
+
+@{
+ViewData["Title"] = "Hobby Details";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hobby Details</h1>
+</div>
+
+@* hobby Description *@
+<div class="container">
+    <div class="row">
+        <div class="border col-lg detail-idea">
+            <h2 class="">@Model.Name</h2>
+            <p class="">Description: @Model.Description</p>
+
+
+        </div>
+    </div>
+</div>
+
+@* People how like this hobby *@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 likes-list">
+            <h4> Hiking Enthusiasts:</h4>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{foreach (Association liked in Model.Liking){
+                    <tr>
+                        <td>@liked.User.Username</td>
+                    </tr>
+                    }}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@* Like to this hobby! *@
+<p>Become an Enthusiast!</p>
+@if(Model.HasLike(ViewBag.CurrentUser))
+{
+<form action="/hobbies/@Model.HobbyId/unrsvp" method="post">
+    <button class="btn btn-secondary btn-sm">Remove from Hobbies</button>
+</form>
+}
+else
+{
+<form action="/hobbies/@Model.HobbyId/rsvp" method="post">
+    <button class="btn btn-secondary btn-sm">Add to Hobbies</button>
+</form>
+}
+
+
+<!-- Basic Links -->
+<a href="/hobbies" class="btn btn-link footer-button">Home</a>
+<a href="/logout" class="btn btn-link footer-button">Log out</a>

@@ -1,0 +1,31 @@
+@using Project.Models
+@model Hobby
+
+@{
+ViewData["Title"] = "Hobby Hub";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Hobbies</h1>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Enthusiasts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{foreach (Hobby hobby in ViewBag.AllHobbies){
+        <tr>
+            <td><a href="/hobbies/@hobby.HobbyId">@hobby.Name</a></td>
+            <td>@hobby.Liking.Count()</td>
+        </tr>
+        }}
+    </tbody>
+</table>
+
+
+@* Basic Links *@
+<a href="/hobbies/new" class="btn btn-link footer-button">Create a hobby</a>

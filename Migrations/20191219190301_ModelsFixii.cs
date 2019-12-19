@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project.Migrations
 {
-    public partial class YourMigrationName : Migration
+    public partial class ModelsFixii : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,9 @@ namespace Project.Migrations
                 {
                     UserId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(nullable: false),
-                    Alias = table.Column<string>(nullable: false),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    Username = table.Column<string>(nullable: false),
                     Email = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
@@ -27,21 +28,22 @@ namespace Project.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Ideas",
+                name: "Hobbies",
                 columns: table => new
                 {
-                    IdeaId = table.Column<int>(nullable: false)
+                    HobbyId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Detail = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
                     CreatedAt = table.Column<DateTime>(nullable: false),
                     UpdatedAt = table.Column<DateTime>(nullable: false),
                     UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Ideas", x => x.IdeaId);
+                    table.PrimaryKey("PK_Hobbies", x => x.HobbyId);
                     table.ForeignKey(
-                        name: "FK_Ideas_Users_UserId",
+                        name: "FK_Hobbies_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "UserId",
@@ -55,16 +57,16 @@ namespace Project.Migrations
                     AssociationId = table.Column<int>(nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UserId = table.Column<int>(nullable: false),
-                    IdeaId = table.Column<int>(nullable: false)
+                    HobbyID = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Associations", x => x.AssociationId);
                     table.ForeignKey(
-                        name: "FK_Associations_Ideas_IdeaId",
-                        column: x => x.IdeaId,
-                        principalTable: "Ideas",
-                        principalColumn: "IdeaId",
+                        name: "FK_Associations_Hobbies_HobbyID",
+                        column: x => x.HobbyID,
+                        principalTable: "Hobbies",
+                        principalColumn: "HobbyId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Associations_Users_UserId",
@@ -75,9 +77,9 @@ namespace Project.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Associations_IdeaId",
+                name: "IX_Associations_HobbyID",
                 table: "Associations",
-                column: "IdeaId");
+                column: "HobbyID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Associations_UserId",
@@ -85,8 +87,8 @@ namespace Project.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Ideas_UserId",
-                table: "Ideas",
+                name: "IX_Hobbies_UserId",
+                table: "Hobbies",
                 column: "UserId");
         }
 
@@ -96,7 +98,7 @@ namespace Project.Migrations
                 name: "Associations");
 
             migrationBuilder.DropTable(
-                name: "Ideas");
+                name: "Hobbies");
 
             migrationBuilder.DropTable(
                 name: "Users");

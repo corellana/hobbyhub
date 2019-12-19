@@ -9,7 +9,7 @@ namespace Project.Models
 
         // "users" table is represented by this DbSet "Users"
             public DbSet<User> Users {get;set;}
-            public DbSet<Idea> Ideas {get;set;}
+            public DbSet<Hobby> Hobbies {get;set;}
             public DbSet<Association> Associations {get;set;}
     }
 }

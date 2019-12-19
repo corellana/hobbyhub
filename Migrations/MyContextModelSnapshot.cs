@@ -22,38 +22,41 @@ namespace Project.Migrations
                     b.Property<int>("AssociationId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<int>("IdeaId");
+                    b.Property<int>("HobbyID");
 
                     b.Property<int>("UserId");
 
                     b.HasKey("AssociationId");
 
-                    b.HasIndex("IdeaId");
+                    b.HasIndex("HobbyID");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Associations");
                 });
 
-            modelBuilder.Entity("Project.Models.Idea", b =>
+            modelBuilder.Entity("Project.Models.Hobby", b =>
                 {
-                    b.Property<int>("IdeaId")
+                    b.Property<int>("HobbyId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<DateTime>("CreatedAt");
 
-                    b.Property<string>("Detail")
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
                         .IsRequired();
 
                     b.Property<DateTime>("UpdatedAt");
 
                     b.Property<int>("UserId");
 
-                    b.HasKey("IdeaId");
+                    b.HasKey("HobbyId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Ideas");
+                    b.ToTable("Hobbies");
                 });
 
             modelBuilder.Entity("Project.Models.User", b =>
@@ -61,21 +64,24 @@ namespace Project.Migrations
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Alias")
-                        .IsRequired();
-
                     b.Property<DateTime>("CreatedAt");
 
                     b.Property<string>("Email")
                         .IsRequired();
 
-                    b.Property<string>("Name")
+                    b.Property<string>("FirstName")
+                        .IsRequired();
+
+                    b.Property<string>("LastName")
                         .IsRequired();
 
                     b.Property<string>("Password")
                         .IsRequired();
 
                     b.Property<DateTime>("UpdatedAt");
+
+                    b.Property<string>("Username")
+                        .IsRequired();
 
                     b.HasKey("UserId");
 
@@ -84,21 +90,21 @@ namespace Project.Migrations
 
             modelBuilder.Entity("Project.Models.Association", b =>
                 {
-                    b.HasOne("Project.Models.Idea", "Idea")
+                    b.HasOne("Project.Models.Hobby", "Hobby")
                         .WithMany("Liking")
-                        .HasForeignKey("IdeaId")
+                        .HasForeignKey("HobbyID")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Project.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Likes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Project.Models.Idea", b =>
+            modelBuilder.Entity("Project.Models.Hobby", b =>
                 {
                     b.HasOne("Project.Models.User", "Creator")
-                        .WithMany()
+                        .WithMany("Hobbies")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
